@@ -10,60 +10,57 @@
 
 */
 
-console.log('catwalk');
+console.log('CATWALK2');
 
 //var imgReverse = document.getElementsByTagName('img')[0];
 //imgReverse.style.transform = 'scaleX(-1)';
 
-var movePixelsLeft = 10;
-var movePixelsDown = 10;
+var movePixels = 10;
 var delayMs = 50;
 var catTimer = null;
-//var goRight = true;
+var goRight = true;
+var goUp = false;
 
 function catWalk() {
 	//get cat image
   var img = document.getElementsByTagName('img')[0];
+  
   //get left offset of image. it's a string first, change to integer
   var currentLeft = parseInt(img.style.left);
   var currentHeight = parseInt(img.style.top);
 
-   
-  //increments pixels
-  img.style.left = (currentLeft + movePixelsLeft) + 'px';
-  img.style.top = (currentHeight + movePixelsDown) + 'px';
+  //increments pixels to the left
+  img.style.left = (currentLeft + movePixels) + 'px';
   
- 
-  //if cat gets to right hand side of screen..
-  if (currentLeft > (window.innerWidth-img.width)) {
+
+  //if cat gets to right hand side of screen while walking to the right..
+  //original function sent cat back to left hand side of screen by setting left to 0
+  if (goRight == true && currentLeft > (window.innerWidth-img.width)) {
   	
-  	//flip the image
-  	img.style.transform = 'rotate(270deg)';
-  	//img.style.transform = 'scaleX(-1)';
+  	goRight == false;
+  	//img.style.transform = 'rotate(270deg)';
+  	img.style.transform = 'scaleX(-1)';
 
   	//change movePixels to negative value
-		movePixelsLeft = movePixelsLeft * -1;
-  }
+		movePixels = -10;
+	}
 
-  //if cat is at left hand side of screen
-  else if((currentLeft < 0)){ 
+	 //if cat is at left hand side of screen while walking left
+  else if(currentLeft <= 0 && goRight == false){
   	img.style.transform = 'scaleX(1)';
-  	movePixelsLeft = movePixelsLeft* -1;
-  }
-  //if cat gets to bottom of screen
-  else if(currentHeight > (window.innerHeight-img.height)){ 
-  	movePixelsDown = movePixelsDown* -1;
-  }
-  //if cat gets to top of screen
-  else if (currentHeight < 0){ 
-  	movePixelsDown = movePixelsDown* -1;
+  	movePixels = 10;
   }
 
-  //if cat is in the middle of the screen
-  else if(currentLeft == (window.innerWidth/2)){ 
-  img.style.transform = 'rotate(270deg)';
-}
+		//change height
+  // 	img.style.top = (currentHeight + movePixels) + 'px';
+		// if (
+			
+		// 	)
  
+  //if cat is in the middle of the screen
+  else if(currentLeft == (window.innerWidth/2)+- img.width){
+  	img.style.transform = 'rotate(270deg)';
+  }
 }
 
 function startCatWalk() {
@@ -84,17 +81,15 @@ var stopButton = document.getElementById('stop-button');
 var pressStart = function(){
 	console.log('START');
 		delayMs = 50;
-		movePixelsLeft = 10;
-		movePixelsDown = 10;
+		movePixels = 10;
 		startCatWalk();
 }
 var pressSpeed = function(){
 	console.log('SPEED');
 	//
-	delayMs = delayMs--;	//smoother
-	movePixelsLeft++;
-	movePixelsDown++;	//can be jolty animation
-	//startCatWalk();
+	delayMs = delayMs - 10;	//smoother
+	movePixels = movePixels + 10;	//can be jolty animation
+	startCatWalk();
 }
 var pressStop = function(){
 	console.log('STOP');
@@ -102,8 +97,8 @@ var pressStop = function(){
 	//catTimer = null;
 
 	movePixels = 0;
-	//delayMs = 50;
-	//startCatWalk();
+	delayMs = 50;
+	startCatWalk();
 }
 
 
